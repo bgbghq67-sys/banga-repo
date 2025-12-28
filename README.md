@@ -283,8 +283,7 @@ Templates are defined using JSON configuration:
 
 | Channel | Contact |
 |---------|---------|
-| 📧 Email | support@bangaphotobooth.com |
-| 💬 Telegram | @bangasupport |
+| 📧 Email | bgbghq67@gmail.com |
 | 📖 Docs | [Setup Guide](SETUP_GUIDE.md) |
 
 </div>
@@ -300,9 +299,9 @@ Unauthorized distribution or modification is prohibited.
 
 <div align="center">
 
-### Made with ❤️ in Myanmar
+### Made with ❤️ 
 
-**© 2024 Banga Photobooth. All rights reserved.**
+**© 2025 Banga Photobooth. All rights reserved.**
 
 <img src="Assets/Logo.png" alt="Logo" width="60"/>
 
