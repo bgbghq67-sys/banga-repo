@@ -1,0 +1,17 @@
+{
+  "templateName": "magazine",
+  "resolution": { "width": 1200, "height": 1800 },
+  "dpi": 300,
+  "orientation": "portrait",
+  "type": "2x2",
+  "photoSlots": [
+    { "x": 42, "y": 78, "width": 547, "height": 821 },
+    { "x": 623, "y": 78, "width": 547, "height": 821 },
+    { "x": 42, "y": 920, "width": 547, "height": 821 },
+    { "x": 623, "y": 920, "width": 547, "height": 821 }
+  ],
+  "qrSlot": { "x": 1035, "y": 1613, "width": 94, "height": 94 },
+  "logoSlot": { "x": 80, "y": 1690, "width": 220, "height": 100 },
+  "templateBoundary": { "x": 40, "y": 40, "width": 1120, "height": 1720, "cornerRadius": 18 },
+  "notes": "Magazine-style template featuring VOGUE, Marie Claire, ELLE, and National Geographic logos. 2x2 grid with editorial layout aesthetic."
+}

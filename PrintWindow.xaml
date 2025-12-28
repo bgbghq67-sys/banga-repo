@@ -1,0 +1,277 @@
+<Window x:Class="Banga_Photobooth.PrintWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Print Preview" 
+        Height="1080" Width="1920"
+        WindowState="Maximized"
+        WindowStyle="None"
+        Background="White">
+
+    <Window.Resources>
+        <Style x:Key="PrintOptionCheckBox" TargetType="CheckBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal">
+                            <Border x:Name="Box"
+                                    Width="36"
+                                    Height="36"
+                                    CornerRadius="8"
+                                    Background="White"
+                                    BorderBrush="White"
+                                    BorderThickness="2"
+                                    Margin="0,0,16,0">
+                                <Path x:Name="CheckMark"
+                                      Data="M6,18 L14,26 L30,10"
+                                      Stroke="#E63946"
+                                      StrokeThickness="4"
+                                      StrokeStartLineCap="Round"
+                                      StrokeEndLineCap="Round"
+                                      Visibility="Collapsed"/>
+                            </Border>
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Background Image -->
+        <Image x:Name="BackgroundImage" 
+               Stretch="UniformToFill"/>
+
+        <!-- Main Content Wrapped in Viewbox to prevent cutoff -->
+        <Viewbox Stretch="Uniform" Margin="40">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
+
+                <!-- LEFT SIDE: Preview Photos -->
+                <StackPanel Margin="0,0,60,0">
+                    <!-- Title -->
+                    <StackPanel Margin="0,0,0,30">
+                <TextBlock Text="PREVIEW AI CARTOON" 
+                           FontFamily="Assets/Fonts/#Poppins"
+                                   FontSize="36" 
+                           FontWeight="Bold"
+                           Foreground="#2C3E50"
+                           HorizontalAlignment="Center"/>
+                <TextBlock Text="애니메이션 미리보기" 
+                           FontFamily="Assets/Fonts/#Poppins"
+                                   FontSize="20" 
+                           Foreground="#7F8C8D"
+                           HorizontalAlignment="Center"
+                                   Margin="0,4,0,0"/>
+            </StackPanel>
+
+                    <!-- Photo Labels -->
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                        <TextBlock Text="Actual Photo"
+                                   FontFamily="Assets/Fonts/#Poppins"
+                                   FontSize="24"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2C3E50"
+                                   Width="360"
+                                   TextAlignment="Center"/>
+                        <TextBlock Text="AI Cartoon Photo"
+                                   FontFamily="Assets/Fonts/#Poppins"
+                                   FontSize="24"
+                                   FontWeight="SemiBold"
+                                   Foreground="#2C3E50"
+                                   Width="360"
+                                   TextAlignment="Center"
+                                   Margin="40,0,0,0"/>
+                    </StackPanel>
+
+                    <!-- Two Photos Side by Side -->
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="360"
+                                Height="540"
+                                Background="Transparent">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="Black" 
+                                                  Opacity="0.25" 
+                                                  BlurRadius="20" 
+                                                  ShadowDepth="5"/>
+                                </Border.Effect>
+                            <Viewbox Stretch="Uniform">
+                                <Grid x:Name="ActualPhotoGrid">
+                                    <Image x:Name="ActualPhotoImage" Stretch="None" />
+                                    <Canvas x:Name="ActualPhotoCanvas"/>
+                                </Grid>
+                            </Viewbox>
+                            </Border>
+
+                        <Border Width="360"
+                                Height="540"
+                                Background="Transparent"
+                                Margin="40,0,0,0">
+                                <Border.Effect>
+                                    <DropShadowEffect Color="Black" 
+                                                  Opacity="0.25" 
+                                                  BlurRadius="20" 
+                                                  ShadowDepth="5"/>
+                                </Border.Effect>
+                            <Viewbox Stretch="Uniform">
+                                <Grid x:Name="CartoonPhotoGrid">
+                                    <Image x:Name="CartoonPhotoImage" Stretch="None" />
+                                    <Canvas x:Name="CartoonPhotoCanvas"/>
+                                </Grid>
+                        </Viewbox>
+                            </Border>
+                    </StackPanel>
+
+                    <!-- Caption -->
+                    <TextBlock Text="AI Cartoon Photo Close to Reality" 
+                               FontFamily="Assets/Fonts/#Poppins"
+                               FontSize="22" 
+                               Foreground="Black"
+                        HorizontalAlignment="Center"
+                               Margin="0,30,0,0"/>
+                </StackPanel>
+
+                <!-- RIGHT SIDE: Selection Box + Button -->
+                <StackPanel VerticalAlignment="Top">
+                    <!-- Title (Aligned with Left Side) -->
+                    <StackPanel Margin="0,0,0,30">
+                        <TextBlock Text="PRINTING SELECTION" 
+                                   FontFamily="Assets/Fonts/#Poppins"
+                                   FontSize="36" 
+                                   FontWeight="Bold"
+                                   Foreground="#2C3E50"
+                                   HorizontalAlignment="Left"/>
+                        <TextBlock Text="인쇄 선택" 
+                                   FontFamily="Assets/Fonts/#Poppins"
+                                   FontSize="20" 
+                                   Foreground="#7F8C8D"
+                                   HorizontalAlignment="Left"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <!-- Instruction Text -->
+                    <StackPanel Margin="0,30,0,10" HorizontalAlignment="Left">
+                        <TextBlock Text="Click to choose printing options" 
+                                   FontFamily="Assets/Fonts/#Poppins"
+                                   FontSize="24" 
+                                   FontWeight="SemiBold"
+                                   Foreground="#2C3E50"/>
+                        <TextBlock Text="인쇄 옵션을 선택하려면 클릭하세요" 
+                                      FontFamily="Assets/Fonts/#Poppins"
+                                      FontSize="18"
+                                   Foreground="#7F8C8D"
+                                   Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <!-- Blue Selection Box -->
+                    <Border Background="Transparent"
+                            CornerRadius="42"
+                        BorderBrush="White"
+                        BorderThickness="8"
+                            Width="640"
+                            HorizontalAlignment="Left"
+                            Margin="0,10,0,40">
+                    <Border.Effect>
+                        <DropShadowEffect Color="Black" 
+                                              Opacity="0.35" 
+                                              BlurRadius="28" 
+                                        ShadowDepth="10"/>
+                    </Border.Effect>
+                        <Border Background="#0E2C61"
+                                CornerRadius="36"
+                                Padding="40,46">
+                    <StackPanel>
+                            <CheckBox x:Name="Option1CheckBox"
+                                          Style="{StaticResource PrintOptionCheckBox}"
+                                      FontFamily="Assets/Fonts/#Poppins"
+                                          FontSize="22"
+                                      Foreground="White"
+                                          Margin="0,0,0,25"
+                                      Checked="PrintingOption_Checked"
+                                          Unchecked="PrintingOption_Unchecked"
+                                          Content="Actual Photo 2 pieces"/>
+
+                            <CheckBox x:Name="Option2CheckBox"
+                                          Style="{StaticResource PrintOptionCheckBox}"
+                                      FontFamily="Assets/Fonts/#Poppins"
+                                          FontSize="22"
+                                      Foreground="White"
+                                          Margin="0,0,0,25"
+                                      Checked="PrintingOption_Checked"
+                                          Unchecked="PrintingOption_Unchecked"
+                                          Content="Actual Photo 1 + AI Cartoon Photo 1"/>
+
+                            <CheckBox x:Name="Option3CheckBox"
+                                          Style="{StaticResource PrintOptionCheckBox}"
+                                      FontFamily="Assets/Fonts/#Poppins"
+                                          FontSize="22"
+                                      Foreground="White"
+                                      Checked="PrintingOption_Checked"
+                                          Unchecked="PrintingOption_Unchecked"
+                                          Content="AI Cartoon Photo 2 pieces"/>
+                    </StackPanel>
+                </Border>
+                    </Border>
+
+                <!-- Print Button -->
+                <Button x:Name="PrintButton"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        Click="PrintButton_Click"
+                            IsEnabled="False"
+                            HorizontalAlignment="Left"
+                            Width="480"
+                            Height="150"
+                            Margin="80,0,0,0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="Transparent">
+                                <Image x:Name="PrintButtonImage" 
+                                           Source="pack://siteoforigin:,,,/Assets/big_PRINT.png"
+                                       Stretch="Uniform"
+                                       Opacity="{TemplateBinding Opacity}">
+                                    <Image.Effect>
+                                        <DropShadowEffect Color="Black" 
+                                                        Opacity="0.3" 
+                                                              BlurRadius="15" 
+                                                              ShadowDepth="5"/>
+                                    </Image.Effect>
+                                </Image>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Opacity" Value="0.9"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.8"/>
+                                    <Setter Property="Cursor" Value="Arrow"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                </StackPanel>
+
+            </StackPanel>
+        </Viewbox>
+
+        <!-- Loading Overlay -->
+        <Grid x:Name="LoadingOverlay" Visibility="Collapsed" Background="#80000000">
+            <Border Background="White" CornerRadius="20" Padding="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel>
+                    <ProgressBar IsIndeterminate="True" Width="200" Height="20" Margin="0,0,0,20" Foreground="#E63946"/>
+                    <TextBlock Text="Uploading &amp; Generating QR..." 
+                               FontFamily="Assets/Fonts/#Poppins" 
+                               FontSize="24" 
+                               FontWeight="Bold" 
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>

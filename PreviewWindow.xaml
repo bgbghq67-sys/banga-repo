@@ -1,0 +1,168 @@
+<Window x:Class="Banga_Photobooth.PreviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Preview" 
+        WindowStyle="None"
+        WindowState="Maximized"
+        ResizeMode="NoResize"
+        Background="White">
+
+    <Grid>
+        <!-- Main Content -->
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Main Content Area -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.9*"/>
+                    <ColumnDefinition Width="1.1*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left Side: Single Template Preview -->
+                <Grid Grid.Column="0" Margin="0,0,40,0" VerticalAlignment="Center">
+                    <StackPanel HorizontalAlignment="Center" Width="320">
+                        <!-- Header above template preview -->
+                        <StackPanel Orientation="Vertical"
+                                    Margin="0,0,0,12"
+                                    HorizontalAlignment="Center">
+                    <TextBlock Text="PREVIEW" 
+                               FontFamily="Assets/Fonts/#Poppins" 
+                               FontWeight="Bold"
+                                       FontSize="42"
+                                       Foreground="#333333">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect BlurRadius="8"
+                                                      ShadowDepth="2"
+                                                      Color="#33000000"/>
+                                </TextBlock.Effect>
+                            </TextBlock>
+                    <TextBlock Text="미리보기" 
+                               FontFamily="Assets/Fonts/#Poppins" 
+                                       FontSize="22"
+                                       Margin="0,-4,0,0"
+                                       Foreground="#555555"/>
+                </StackPanel>
+
+                        <!-- Template preview -->
+                        <Viewbox Stretch="Uniform" HorizontalAlignment="Center" MaxHeight="495">
+                            <Grid x:Name="StandardTemplateSurface" Width="1200" Height="1800">
+                                <Canvas x:Name="StandardTemplateOverlay" Width="1200" Height="1800" IsHitTestVisible="False"/>
+                                <Image x:Name="StandardTemplateImage" Width="1200" Height="1800" Stretch="Fill"/>
+                            </Grid>
+                        </Viewbox>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Hidden Cartoon Surface used only for print rendering -->
+                <Viewbox Grid.Column="0" Visibility="Collapsed">
+                    <Grid x:Name="CartoonTemplateSurface" Width="1200" Height="1800">
+                        <Canvas x:Name="CartoonTemplateOverlay" Width="1200" Height="1800" IsHitTestVisible="False"/>
+                        <Image x:Name="CartoonTemplateImage" Width="1200" Height="1800" Stretch="Fill"/>
+                    </Grid>
+                </Viewbox>
+
+                <!-- Right Side: Photo Selection Grid -->
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                <!-- Right Header: SELECT 4 PICTURES -->
+                    <StackPanel Grid.Row="0"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Left"
+                                Margin="0,0,0,20">
+                    <TextBlock Text="✓" 
+                               FontSize="56" 
+                               Foreground="#E63946"
+                               FontWeight="Bold"
+                               Margin="0,0,15,0"
+                               VerticalAlignment="Center"/>
+                        <StackPanel>
+                        <TextBlock Text="SELECT 4 PICTURES" 
+                                   FontFamily="Assets/Fonts/#Poppins" 
+                                   FontWeight="Bold"
+                                   FontSize="40" 
+                                   Foreground="#333333"/>
+                        <TextBlock Text="사진을 선택해 주세요" 
+                                   FontFamily="Assets/Fonts/#Poppins" 
+                                   FontSize="22" 
+                                   Foreground="#666666"
+                                       Margin="0,-5,0,6"/>
+                            <TextBlock Text="Touch Screen on Pictures"
+                                       FontFamily="Assets/Fonts/#Poppins"
+                                       FontSize="20"
+                                       FontWeight="SemiBold"
+                                       Foreground="#333333"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                        <!-- Photo Grid -->
+                        <UniformGrid Grid.Row="1"
+                                     x:Name="PhotoGrid"
+                                     Rows="3"
+                                 Columns="2"
+                                 HorizontalAlignment="Left"
+                                 Width="620"
+                                 Margin="0,0,0,20"/>
+                </Grid>
+            </Grid>
+
+            <!-- Footer: Next Button aligned under selection -->
+            <Grid Grid.Row="1" Margin="0,10,0,0" Height="200" VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.9*"/>
+                    <ColumnDefinition Width="1.1*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="NextButton"
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Bottom"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        Click="NextButton_Click"
+                        IsEnabled="False"
+                        Margin="20,0,0,0"
+                        Width="580"
+                        Height="180">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="Transparent">
+                                <Image x:Name="NextButtonImage" 
+                                       Stretch="Uniform"
+                                       Opacity="{TemplateBinding Opacity}">
+                                    <Image.Effect>
+                                        <DropShadowEffect Color="Black" 
+                                                        Opacity="0.3" 
+                                                        BlurRadius="10" 
+                                                        ShadowDepth="2"/>
+                                    </Image.Effect>
+                                </Image>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Opacity" Value="0.8"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                    <Setter Property="Cursor" Value="Arrow"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
+

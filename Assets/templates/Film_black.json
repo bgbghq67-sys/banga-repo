@@ -1,0 +1,18 @@
+{
+  "templateName": "Film_black",
+  "resolution": { "width": 600, "height": 1800 },
+  "dpi": 300,
+  "orientation": "portrait",
+  "type": "1x4",
+  "photoSlots": [
+    { "x": 50, "y": 150, "width": 500, "height": 380 },
+    { "x": 50, "y": 560, "width": 500, "height": 380 },
+    { "x": 50, "y": 970, "width": 500, "height": 380 },
+    { "x": 50, "y": 1380, "width": 500, "height": 380 }
+  ],
+  "qrSlot": { "x": 407, "y": 19, "width": 115, "height": 115 },
+  "logoSlot": null,
+  "templateBoundary": { "x": 30, "y": 30, "width": 540, "height": 1740, "cornerRadius": 8 },
+  "notes": "Vertical 1x4 photobooth film strip with four photo frames and a QR slot in the top-right corner. Designed for high-resolution Epson print at 300 DPI."
+}
+

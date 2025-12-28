@@ -1,0 +1,18 @@
+{
+  "templateName": "blue_check",
+  "resolution": { "width": 600, "height": 1800 },
+  "dpi": 300,
+  "orientation": "portrait",
+  "type": "1x4",
+  "photoSlots": [
+    { "x": 50, "y": 150, "width": 500, "height": 380 },
+    { "x": 50, "y": 560, "width": 500, "height": 380 },
+    { "x": 50, "y": 970, "width": 500, "height": 380 },
+    { "x": 50, "y": 1380, "width": 500, "height": 380 }
+  ],
+  "qrSlot": { "x": 413, "y": 18, "width": 125, "height": 125 },
+  "logoSlot": { "x": 50, "y": 50, "width": 150, "height": 80 },
+  "templateBoundary": { "x": 35, "y": 35, "width": 530, "height": 1730, "cornerRadius": 12 },
+  "notes": "Blue checkered border template with four vertical photo slots. Features decorative blue plaid frame."
+}
+

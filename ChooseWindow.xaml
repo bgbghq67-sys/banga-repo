@@ -1,0 +1,86 @@
+<Window x:Class="Banga_Photobooth.ChooseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Banga Photobooth - Choose"
+        Height="800" Width="1200"
+        WindowState="Maximized"
+        WindowStyle="None">
+
+    <Window.Resources>
+        <!-- Toggleable photo tile with rounded frame and red check overlay -->
+        <Style x:Key="PhotoTileToggleStyle" TargetType="ToggleButton">
+            <Setter Property="Margin" Value="24"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Grid>
+                            <Border x:Name="Frame" CornerRadius="28" BorderThickness="8" BorderBrush="White" Background="Black" Effect="{DynamicResource TileShadow}"/>
+                            <!-- Rounded image by using a Rectangle with Radius and ImageBrush fill -->
+                            <Rectangle RadiusX="20" RadiusY="20" Margin="8">
+                                <Rectangle.Fill>
+                                    <ImageBrush ImageSource="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" Stretch="Uniform" AlignmentX="Center" AlignmentY="Center"/>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <Image x:Name="CheckOverlay" Source="pack://application:,,,/Assets/red_check.png" Width="90" Height="90"
+                                   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-6,-24,0,0" Opacity="0"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckOverlay" Property="Opacity" Value="1"/>
+                                <Setter TargetName="Frame" Property="BorderBrush" Value="Red"/>
+                                <Setter TargetName="Frame" Property="BorderThickness" Value="9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <DropShadowEffect x:Key="TileShadow" BlurRadius="14" ShadowDepth="9" Color="#40000000"/>
+    </Window.Resources>
+
+    <Viewbox Stretch="Uniform" StretchDirection="Both" ClipToBounds="True">
+        <Grid Width="1920" Height="1080" UseLayoutRounding="True" SnapsToDevicePixels="True">
+            <Grid.Background>
+                <ImageBrush ImageSource="pack://application:,,,/Assets/mainbg.png"/>
+            </Grid.Background>
+
+            <!-- Top header area -->
+            <Grid Margin="64,40,64,0" VerticalAlignment="Top" Height="140">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left: PREVIEW -->
+                <StackPanel Grid.Column="0" Orientation="Vertical">
+                    <TextBlock Text="PREVIEW" FontFamily="pack://application:,,,/Assets/Fonts/#Poppins" FontSize="52" FontWeight="Bold" Foreground="#333"/>
+                    <TextBlock Text="미리보기" FontFamily="pack://application:,,,/Assets/Fonts/#Poppins" FontSize="36" Foreground="#555"/>
+                </StackPanel>
+
+                <!-- Right: SELECT 4 PICTURES with red check -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <Image Source="pack://application:,,,/Assets/red_check.png" Width="70" Height="70" Margin="0,0,16,0"/>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="SELECT 4 PICTURES" FontFamily="pack://application:,,,/Assets/Fonts/#Poppins" FontSize="52" FontWeight="Bold" Foreground="#333"/>
+                        <TextBlock Text="사진을 선택해 주세요" FontFamily="pack://application:,,,/Assets/Fonts/#Poppins" FontSize="36" Foreground="#555"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+
+            <!-- Center tiles grid -->
+            <UniformGrid x:Name="TilesGrid" Rows="2" Columns="3" Margin="140,180,140,220"/>
+
+            <!-- Bottom helper text -->
+            <TextBlock Text="Touch Screen on Pictures" FontFamily="pack://application:,,,/Assets/Fonts/#Poppins" FontSize="48" Foreground="#333" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,130"/>
+
+            <!-- Next button in bottom-right -->
+            <Button x:Name="NextButton" Width="420" Height="140" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,60,60" Click="NextButton_Click" IsEnabled="False" Background="Transparent" BorderThickness="0">
+                <Image Source="pack://application:,,,/Assets/big_NEXT.png" Stretch="Fill"/>
+            </Button>
+        </Grid>
+    </Viewbox>
+</Window>

@@ -1,0 +1,250 @@
+<Window x:Class="Banga_Photobooth.CaptureWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Banga_Photobooth"
+        mc:Ignorable="d"
+        Title="Banga Photobooth - Capture" 
+        Height="800" Width="1200"
+        WindowState="Maximized"
+        WindowStyle="None">
+
+    <Window.Resources>
+        <Style x:Key="PhotoPreviewFrameStyle" TargetType="Border">
+            <Setter Property="Background" Value="Black" />
+            <Setter Property="CornerRadius" Value="28" />
+            <Setter Property="BorderThickness" Value="8" />
+            <Setter Property="BorderBrush" Value="White" />
+            <Setter Property="Height" Value="180" />
+            <Setter Property="Width" Value="240" />
+            <Setter Property="Margin" Value="20,8" />
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="12" ShadowDepth="6" Color="#40000000"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Storyboard x:Key="CountdownStepAnimation">
+            <DoubleAnimation Storyboard.TargetName="CountdownText" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.12">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="CountdownScale" Storyboard.TargetProperty="ScaleX">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.22" Value="1.35">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" Amplitude="0.6"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.46" Value="0.92">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.70" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="CountdownScale" Storyboard.TargetProperty="ScaleY">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.22" Value="1.35">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" Amplitude="0.6"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.46" Value="0.92">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.70" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="CountdownShadow" Storyboard.TargetProperty="BlurRadius">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="8"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.22" Value="14">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.70" Value="8"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="SmileAnimation">
+        </Storyboard>
+
+        <!-- Right-side countdown animation: 3, 2, 1, Smile! -->
+        <Storyboard x:Key="RightCountdownStepAnimation">
+            <DoubleAnimation Storyboard.TargetName="RightCountdownHost" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.12">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RightCountdownScale" Storyboard.TargetProperty="ScaleX">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.22" Value="1.35">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" Amplitude="0.6"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.46" Value="0.92">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.70" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RightCountdownScale" Storyboard.TargetProperty="ScaleY">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.22" Value="1.35">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" Amplitude="0.6"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.46" Value="0.92">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.70" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RightCountdownShadow" Storyboard.TargetProperty="BlurRadius">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="8"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.22" Value="14">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.70" Value="8"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="RightSmileAnimation">
+            <DoubleAnimation Storyboard.TargetName="RightCountdownHost" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.12"/>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RightCountdownScale" Storyboard.TargetProperty="ScaleX">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.30" Value="1.45">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" Amplitude="0.6"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.70" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="RightCountdownScale" Storyboard.TargetProperty="ScaleY">
+                <EasingDoubleKeyFrame KeyTime="0:0:0" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.30" Value="1.45">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseOut" Amplitude="0.6"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.70" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+
+    <Viewbox Stretch="Uniform" StretchDirection="Both" ClipToBounds="True">
+            <Grid Width="1920" Height="1080" UseLayoutRounding="True" SnapsToDevicePixels="True">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="450"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="450"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0">
+                    <Border x:Name="LeftPreview1" Style="{StaticResource PhotoPreviewFrameStyle}" Height="217" Width="332"/>
+                    <Border x:Name="LeftPreview2" Style="{StaticResource PhotoPreviewFrameStyle}" Height="220" Width="332"/>
+                    <Border x:Name="LeftPreview3" Style="{StaticResource PhotoPreviewFrameStyle}" Height="215" Width="331"/>
+                </StackPanel>
+
+                <!-- Center Column -->
+                <Grid Grid.Column="1">
+                    
+                    <!-- Camera Frame (Centered in Column) -->
+                    <Border x:Name="CenterPreviewBorder" VerticalAlignment="Center" HorizontalAlignment="Center" Width="998" Height="702" Background="White" CornerRadius="28" BorderThickness="12" BorderBrush="White" ClipToBounds="True" Padding="2" SnapsToDevicePixels="True" UseLayoutRounding="True">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="18" ShadowDepth="10" Color="#40000000"/>
+                        </Border.Effect>
+                        <Grid>
+                            <!-- Inner rounded mask that matches the border's inner curve (28 - 12 = 16) -->
+                            <Rectangle x:Name="CameraFeedRect" RadiusX="16" RadiusY="16" Fill="White" SnapsToDevicePixels="True" Margin="0,-3,-2,-1">
+                                <UIElement.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </UIElement.RenderTransform>
+                            </Rectangle>
+
+                            <!-- Loading Indicator -->
+                            <StackPanel x:Name="LoadingPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <ProgressBar IsIndeterminate="True" Width="200" Height="20" Foreground="#00A6FF" Background="#EEEEEE" BorderThickness="0"/>
+                                <TextBlock Text="Initializing Camera..." FontSize="24" Foreground="#555555" HorizontalAlignment="Center" Margin="0,10,0,0" FontFamily="Assets/Fonts/#Poppins"/>
+                            </StackPanel>
+                            
+                            <!-- Template overlay removed: templates are not applied on capture -->
+                            <TextBlock x:Name="CountdownText" Text="" FontSize="120" FontFamily="Assets/Fonts/#Poppins" FontWeight="Bold" Foreground="#FFD700" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0" RenderTransformOrigin="0.5,0.5">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect x:Name="CountdownShadow" BlurRadius="8" ShadowDepth="0" Color="#222"/>
+                                </TextBlock.Effect>
+                                <TextBlock.RenderTransform>
+                                    <ScaleTransform x:Name="CountdownScale"/>
+                                </TextBlock.RenderTransform>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+
+                    <!-- Countdown Timer: Positioned relative to the Border, shifted UP -->
+                    <!-- Margin-Top is negative to pull it above the center line/border -->
+                    <Grid x:Name="RightCountdownHost" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,-850,0,0" Opacity="0" RenderTransformOrigin="0.5,0.5" Panel.ZIndex="100">
+                        <Grid.RenderTransform>
+                            <ScaleTransform x:Name="RightCountdownScale"/>
+                        </Grid.RenderTransform>
+                        <!-- Stroke (outline) using four offset copies around the main text -->
+                        <TextBlock x:Name="CountdownOutline1" Text="{Binding Text, ElementName=RightCountdownTextMain}" FontSize="120" FontWeight="Bold" FontFamily="Assets/Fonts/#Poppins" Foreground="Black" Margin="-3,0,0,0"/>
+                        <TextBlock x:Name="CountdownOutline2" Text="{Binding Text, ElementName=RightCountdownTextMain}" FontSize="120" FontWeight="Bold" FontFamily="Assets/Fonts/#Poppins" Foreground="Black" Margin="3,0,0,0"/>
+                        <TextBlock x:Name="CountdownOutline3" Text="{Binding Text, ElementName=RightCountdownTextMain}" FontSize="120" FontWeight="Bold" FontFamily="Assets/Fonts/#Poppins" Foreground="Black" Margin="0,-3,0,0"/>
+                        <TextBlock x:Name="CountdownOutline4" Text="{Binding Text, ElementName=RightCountdownTextMain}" FontSize="120" FontWeight="Bold" FontFamily="Assets/Fonts/#Poppins" Foreground="Black" Margin="0,3,0,0"/>
+                        <!-- Main fill text -->
+                        <TextBlock x:Name="RightCountdownTextMain" Text="" FontSize="120" FontWeight="Bold" FontFamily="Assets/Fonts/#Poppins" Foreground="#00A6FF" RenderTransformOrigin="0.5,0.5">
+                            <TextBlock.Effect>
+                                <DropShadowEffect x:Name="RightCountdownShadow" BlurRadius="8" ShadowDepth="0" Color="Black"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </Grid>
+                </Grid>
+
+                <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="20,0,0,0">
+                    <Border x:Name="RightPreview1" Style="{StaticResource PhotoPreviewFrameStyle}" Height="221" Width="331"/>
+                    <Border x:Name="RightPreview2" Style="{StaticResource PhotoPreviewFrameStyle}" Height="218" Width="331"/>
+                    <Border x:Name="RightPreview3" Style="{StaticResource PhotoPreviewFrameStyle}" Height="217" Width="331"/>
+                </StackPanel>
+
+            </Grid>
+
+        </Grid>
+    </Viewbox>
+</Window>

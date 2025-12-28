@@ -1,0 +1,87 @@
+;
+; DS-RX1 Printer Driver for Windows 11 (x64)
+;
+;
+
+[Version]
+Signature="$Windows NT$"
+Provider=%DNP%
+ClassGUID={4D36E979-E325-11CE-BFC1-08002BE10318}
+Class=Printer
+DriverPackageDisplayName=%DriverPackageDisplayName%
+CatalogFile=DSRX1.cat
+DriverVer=08/15/2022,1.1.4.0
+
+[Manufacturer]
+"Dai Nippon Printing" = Dai Nippon Printing,NTamd64
+
+[Dai Nippon Printing.NTamd64]
+"DS-RX1" = DSRX1.NTamd64,USBPRINT\Dai_Nippon_Printing_D9C2,DSRX1
+
+[DSRX1.NTamd64]
+CopyFiles=DSRX1DRV,DSRX1MON,DSRX1ICM,IMAGELIB.NTamd64
+DataSection=UNIDRV_DATA
+DataFile=DSRX1.GPD
+LanguageMonitor=%DSRX1_MONITOR%
+ICMProfiles=%DSRX1_ICMPROFILE%
+Include=NTPRINT.INF
+Needs=UNIDRV.OEM
+
+;
+; drivers and dependent files
+;
+[DSRX1DRV]
+DSRX1.GPD
+DSRX1.INI
+DSRX1RES.DLL
+DSRX1RN.DLL
+DSRX1UI.DLL
+
+;
+; print monitors
+;
+
+; language monitor
+[DSRX1MON]
+CSJCYLM.DLL
+
+;
+; color profiles
+;
+[DSRX1ICM]
+RX1_v2.icc
+
+;
+; IMAGELIB DLL
+;
+[IMAGELIB.NTamd64]
+CsjImgLib64.dll
+
+[DestinationDirs]
+DefaultDestDir=66000
+DSRX1MON=66002
+DSRX1ICM=66003
+
+[SourceDisksNames.amd64]
+1 = %DISK%,,,""
+
+[SourceDisksFiles]
+DSRX1.GPD = 1
+DSRX1.INI = 1
+RX1_v2.icc = 1
+
+[SourceDisksFiles.amd64]
+DSRX1RES.DLL = 1,x64driver
+DSRX1RN.DLL = 1,x64driver
+DSRX1UI.DLL = 1,x64driver
+CSJCYLM.DLL = 1,x64driver
+CsjImgLib64.dll = 1,IMAGELIB\x64
+
+[Strings]
+PrinterClassName="Printers"
+DNP="Dai Nippon Printing"
+DISK="DS-RX1 Printer MiniDriver Disk"
+DSRX1_MONITOR = "CY Language Monitor,CSJCYLM.DLL"
+DSRX1_ICMPROFILE = "RX1_v2.icc"
+DriverPackageDisplayName="DS-RX1"
+
