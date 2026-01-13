@@ -4,6 +4,11 @@ import { db } from "@/lib/firebase";
 
 const DEVICES_COLLECTION = "devices";
 
+// GET - Health check
+export async function GET() {
+  return NextResponse.json({ ok: true, message: "Add-sessions endpoint is alive" });
+}
+
 // POST - Add sessions to device
 export async function POST(
   request: Request,

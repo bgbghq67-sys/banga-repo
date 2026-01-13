@@ -4,6 +4,11 @@ import { db } from "@/lib/firebase";
 
 const DEVICES_COLLECTION = "devices";
 
+// GET - Health check for UptimeRobot/keep-alive pings
+export async function GET() {
+  return NextResponse.json({ ok: true, message: "Status endpoint is alive", timestamp: Date.now() });
+}
+
 // POST - Check device status (called by Desktop App polling)
 export async function POST(request: Request) {
   try {

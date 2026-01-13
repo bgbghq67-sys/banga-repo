@@ -14,10 +14,12 @@ namespace Banga_Photobooth.Services
         public DeviceRegistrationService()
         {
             _httpClient = new HttpClient();
-            _httpClient.Timeout = TimeSpan.FromSeconds(10);
+            _httpClient.Timeout = TimeSpan.FromSeconds(30); // Increased timeout for slow connections
             
             // Use the same base URL as other services
             _baseUrl = BangaConfig.Current.ApiBaseUrl?.TrimEnd('/') ?? "https://banga-photobooth-admin.vercel.app";
+            
+            System.Diagnostics.Debug.WriteLine($"DeviceRegistrationService initialized with URL: {_baseUrl}");
         }
 
         /// <summary>
@@ -30,6 +32,8 @@ namespace Banga_Photobooth.Services
                 string machineId = MachineIdService.GetMachineId();
                 string machineName = Environment.MachineName;
 
+                System.Diagnostics.Debug.WriteLine($"Registering device: {machineId} ({machineName})");
+
                 var payload = new
                 {
                     machineId = machineId,
@@ -39,8 +43,13 @@ namespace Banga_Photobooth.Services
                 var json = JsonSerializer.Serialize(payload);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync($"{_baseUrl}/api/devices/register", content);
+                var url = $"{_baseUrl}/api/devices/register";
+                System.Diagnostics.Debug.WriteLine($"POST to: {url}");
+
+                var response = await _httpClient.PostAsync(url, content);
                 var responseJson = await response.Content.ReadAsStringAsync();
+
+                System.Diagnostics.Debug.WriteLine($"Response: {response.StatusCode} - {responseJson}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -56,11 +65,23 @@ namespace Banga_Photobooth.Services
                     };
                 }
 
-                return new DeviceStatusResponse { Success = false, ErrorMessage = "Registration failed" };
+                return new DeviceStatusResponse 
+                { 
+                    Success = false, 
+                    ErrorMessage = $"Server returned {(int)response.StatusCode}: {responseJson}" 
+                };
+            }
+            catch (TaskCanceledException)
+            {
+                return new DeviceStatusResponse { Success = false, ErrorMessage = "Connection timeout (30s)" };
+            }
+            catch (HttpRequestException ex)
+            {
+                return new DeviceStatusResponse { Success = false, ErrorMessage = $"Network error: {ex.Message}" };
             }
             catch (Exception ex)
             {
-                return new DeviceStatusResponse { Success = false, ErrorMessage = ex.Message };
+                return new DeviceStatusResponse { Success = false, ErrorMessage = $"Error: {ex.Message}" };
             }
         }
 

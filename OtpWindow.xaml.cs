@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -12,6 +13,8 @@ namespace Banga_Photobooth
         private readonly DispatcherTimer _pollTimer;
         private bool _isUnlocking = false;
         private bool _isRegistered = false;
+        private int _retryCount = 0;
+        private const int MAX_RETRIES = 10; // Maximum retry attempts before showing manual retry button
 
         public OtpWindow()
         {
@@ -22,13 +25,24 @@ namespace Banga_Photobooth
             string machineId = MachineIdService.GetMachineId();
             MachineIdText.Text = FormatMachineId(machineId);
 
-            // Poll every 2 seconds
+            // Poll every 3 seconds (increased from 2)
             _pollTimer = new DispatcherTimer();
-            _pollTimer.Interval = TimeSpan.FromSeconds(2);
+            _pollTimer.Interval = TimeSpan.FromSeconds(3);
             _pollTimer.Tick += PollTimer_Tick;
 
             // Register device on load
             Loaded += OtpWindow_Loaded;
+        }
+        
+        private void LogError(string message)
+        {
+            try
+            {
+                string logPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "connection_log.txt");
+                string logEntry = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] {message}\n";
+                File.AppendAllText(logPath, logEntry);
+            }
+            catch { }
         }
 
         private string FormatMachineId(string id)
@@ -48,13 +62,17 @@ namespace Banga_Photobooth
 
         private async System.Threading.Tasks.Task RegisterDevice()
         {
-            UpdateStatus("Registering device...", "#3498DB");
+            _retryCount++;
+            UpdateStatus($"Connecting to server... (Attempt {_retryCount})", "#3498DB");
+            LogError($"Registration attempt {_retryCount} started");
 
             var result = await _deviceService.RegisterDeviceAsync();
 
             if (result.Success)
             {
                 _isRegistered = true;
+                _retryCount = 0; // Reset retry count on success
+                LogError("Registration successful");
 
                 if (result.IsNewDevice)
                 {
@@ -68,7 +86,7 @@ namespace Banga_Photobooth
                 }
                 else
                 {
-                    UpdateStatus("Waiting for activation...", "#3498DB");
+                    UpdateStatus("Waiting for activation from admin...", "#3498DB");
                 }
 
                 // Start polling
@@ -76,7 +94,40 @@ namespace Banga_Photobooth
             }
             else
             {
-                UpdateStatus($"Connection error. Retrying...", "#E74C3C");
+                string errorMsg = result.ErrorMessage ?? "Unknown error";
+                LogError($"Registration failed: {errorMsg}");
+                
+                if (_retryCount >= MAX_RETRIES)
+                {
+                    // Show detailed error and stop auto-retry
+                    UpdateStatus($"Connection failed. Check internet.", "#E74C3C");
+                    LogError($"Max retries ({MAX_RETRIES}) reached. Stopping auto-retry.");
+                    
+                    // Show retry button or instruction
+                    Dispatcher.Invoke(() =>
+                    {
+                        MessageBox.Show(
+                            $"Cannot connect to server after {MAX_RETRIES} attempts.\n\n" +
+                            $"Error: {errorMsg}\n\n" +
+                            "Please check:\n" +
+                            "1. Internet connection\n" +
+                            "2. Firewall settings\n" +
+                            "3. Try restarting the app\n\n" +
+                            "The app will try again when you click OK.",
+                            "Connection Error",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning
+                        );
+                        
+                        // Reset and try again
+                        _retryCount = 0;
+                    });
+                }
+                else
+                {
+                    UpdateStatus($"Connection error. Retry {_retryCount}/{MAX_RETRIES}...", "#E74C3C");
+                }
+                
                 // Retry registration after 5 seconds
                 await System.Threading.Tasks.Task.Delay(5000);
                 await RegisterDevice();
