@@ -17,18 +17,25 @@ export default function ControlCenterPage() {
   const [sessionAmounts, setSessionAmounts] = useState<{ [key: string]: number }>({});
   const [addingSession, setAddingSession] = useState<string | null>(null);
 
-  const fetchDevices = async () => {
+  const fetchDevices = async (): Promise<void> => {
     try {
       const res = await fetch("/api/devices");
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
       const data = await res.json();
       if (data.ok) {
         setDevices(data.devices);
-        // Initialize session amounts
-        const amounts: { [key: string]: number } = {};
-        data.devices.forEach((d: Device) => {
-          amounts[d.id] = 1;
+        // Initialize session amounts (preserve existing values)
+        setSessionAmounts((prev) => {
+          const amounts: { [key: string]: number } = { ...prev };
+          data.devices.forEach((d: Device) => {
+            if (!(d.id in amounts)) {
+              amounts[d.id] = 1;
+            }
+          });
+          return amounts;
         });
-        setSessionAmounts(amounts);
       }
     } catch (e) {
       console.error("Failed to fetch devices", e);
@@ -52,24 +59,39 @@ export default function ControlCenterPage() {
   };
 
   const addSessions = async (device: Device) => {
-    const amount = sessionAmounts[device.id] || 10;
+    const amount = sessionAmounts[device.id] || 1;
     setAddingSession(device.id);
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
       const res = await fetch(`/api/devices/${device.id}/add-sessions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessions: amount }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
 
       const data = await res.json();
       if (data.ok) {
-        fetchDevices();
+        await fetchDevices(); // Wait for refresh to complete
       } else {
-        alert("Failed: " + data.message);
+        alert("Failed: " + (data.message || "Unknown error"));
       }
-    } catch (e) {
-      alert("Error adding sessions");
+    } catch (e: unknown) {
+      if (e instanceof Error && e.name === 'AbortError') {
+        alert("Request timed out. Please try again.");
+      } else {
+        console.error("Error adding sessions:", e);
+        alert("Error adding sessions. Please refresh and try again.");
+      }
     } finally {
       setAddingSession(null);
     }
